@@ -6,6 +6,7 @@
 package cast
 
 import (
+	"encoding/json"
 	"fmt"
 	"html/template"
 	"testing"
@@ -35,6 +36,7 @@ func TestToUintE(t *testing.T) {
 		{true, 1, false},
 		{false, 0, false},
 		{"8", 8, false},
+		{json.Number("8"), 8, false},
 		{nil, 0, false},
 		// errors
 		{int(-8), 0, true},
@@ -46,6 +48,8 @@ func TestToUintE(t *testing.T) {
 		{float64(-8.31), 0, true},
 		{"-8", 0, true},
 		{"test", 0, true},
+		{json.Number("-8"), 0, true},
+		{json.Number("test"), 0, true},
 		{testing.T{}, 0, true},
 	}
 
@@ -88,6 +92,8 @@ func TestToUint64E(t *testing.T) {
 		{true, 1, false},
 		{false, 0, false},
 		{"8", 8, false},
+		{json.Number("8"), 8, false},
+		{json.Number("118516987156234541"), 118516987156234541, false},
 		{nil, 0, false},
 		// errors
 		{int(-8), 0, true},
@@ -99,6 +105,8 @@ func TestToUint64E(t *testing.T) {
 		{float64(-8.31), 0, true},
 		{"-8", 0, true},
 		{"test", 0, true},
+		{json.Number("-8"), 0, true},
+		{json.Number("test"), 0, true},
 		{testing.T{}, 0, true},
 	}
 
@@ -141,6 +149,7 @@ func TestToUint32E(t *testing.T) {
 		{true, 1, false},
 		{false, 0, false},
 		{"8", 8, false},
+		{json.Number("8"), 8, false},
 		{nil, 0, false},
 		{int(-8), 0, true},
 		{int8(-8), 0, true},
@@ -150,8 +159,11 @@ func TestToUint32E(t *testing.T) {
 		{float32(-8.31), 0, true},
 		{float64(-8.31), 0, true},
 		{"-8", 0, true},
+		{json.Number("-8"), 0, true},
+
 		// errors
 		{"test", 0, true},
+		{json.Number("test"), 0, true},
 		{testing.T{}, 0, true},
 	}
 
@@ -194,6 +206,8 @@ func TestToUint16E(t *testing.T) {
 		{true, 1, false},
 		{false, 0, false},
 		{"8", 8, false},
+		{json.Number("8"), 8, false},
+
 		{nil, 0, false},
 		// errors
 		{int(-8), 0, true},
@@ -205,6 +219,8 @@ func TestToUint16E(t *testing.T) {
 		{float64(-8.31), 0, true},
 		{"-8", 0, true},
 		{"test", 0, true},
+		{json.Number("-8"), 0, true},
+		{json.Number("test"), 0, true},
 		{testing.T{}, 0, true},
 	}
 
@@ -247,6 +263,7 @@ func TestToUint8E(t *testing.T) {
 		{true, 1, false},
 		{false, 0, false},
 		{"8", 8, false},
+		{json.Number("8"), 8, false},
 		{nil, 0, false},
 		// errors
 		{int(-8), 0, true},
@@ -258,6 +275,8 @@ func TestToUint8E(t *testing.T) {
 		{float64(-8.31), 0, true},
 		{"-8", 0, true},
 		{"test", 0, true},
+		{json.Number("-8"), 0, true},
+		{json.Number("test"), 0, true},
 		{testing.T{}, 0, true},
 	}
 
@@ -300,9 +319,12 @@ func TestToIntE(t *testing.T) {
 		{true, 1, false},
 		{false, 0, false},
 		{"8", 8, false},
+		{json.Number("8"), 8, false},
+
 		{nil, 0, false},
 		// errors
 		{"test", 0, true},
+		{json.Number("test"), 0, true},
 		{testing.T{}, 0, true},
 	}
 
@@ -345,9 +367,11 @@ func TestToInt64E(t *testing.T) {
 		{true, 1, false},
 		{false, 0, false},
 		{"8", 8, false},
+		{json.Number("8"), 8, false},
 		{nil, 0, false},
 		// errors
 		{"test", 0, true},
+		{json.Number("test"), 0, true},
 		{testing.T{}, 0, true},
 	}
 
@@ -390,9 +414,11 @@ func TestToInt32E(t *testing.T) {
 		{true, 1, false},
 		{false, 0, false},
 		{"8", 8, false},
+		{json.Number("8"), 8, false},
 		{nil, 0, false},
 		// errors
 		{"test", 0, true},
+		{json.Number("test"), 0, true},
 		{testing.T{}, 0, true},
 	}
 
@@ -435,9 +461,11 @@ func TestToInt16E(t *testing.T) {
 		{true, 1, false},
 		{false, 0, false},
 		{"8", 8, false},
+		{json.Number("8"), 8, false},
 		{nil, 0, false},
 		// errors
 		{"test", 0, true},
+		{json.Number("test"), 0, true},
 		{testing.T{}, 0, true},
 	}
 
@@ -480,9 +508,11 @@ func TestToInt8E(t *testing.T) {
 		{true, 1, false},
 		{false, 0, false},
 		{"8", 8, false},
+		{json.Number("8"), 8, false},
 		{nil, 0, false},
 		// errors
 		{"test", 0, true},
+		{json.Number("test"), 0, true},
 		{testing.T{}, 0, true},
 	}
 
@@ -523,10 +553,12 @@ func TestToFloat64E(t *testing.T) {
 		{float32(8), 8, false},
 		{float64(8.31), 8.31, false},
 		{"8", 8, false},
+		{json.Number("8"), 8, false},
 		{true, 1, false},
 		{false, 0, false},
 		// errors
 		{"test", 0, true},
+		{json.Number("test"), 0, true},
 		{testing.T{}, 0, true},
 	}
 
@@ -567,10 +599,12 @@ func TestToFloat32E(t *testing.T) {
 		{float32(8.31), 8.31, false},
 		{float64(8.31), 8.31, false},
 		{"8", 8, false},
+		{json.Number("8"), 8, false},
 		{true, 1, false},
 		{false, 0, false},
 		// errors
 		{"test", 0, true},
+		{json.Number("test"), 0, true},
 		{testing.T{}, 0, true},
 	}
 
@@ -620,6 +654,7 @@ func TestToStringE(t *testing.T) {
 		{nil, "", false},
 		{[]byte("one time"), "one time", false},
 		{"one more time", "one more time", false},
+		{json.Number("one more time"), "one more time", false},
 		{template.HTML("one time"), "one time", false},
 		{template.URL("http://somehost.foo"), "http://somehost.foo", false},
 		{template.JS("(1+2)"), "(1+2)", false},
@@ -986,11 +1021,14 @@ func TestToIntSliceE(t *testing.T) {
 		{[]int{1, 3}, []int{1, 3}, false},
 		{[]interface{}{1.2, 3.2}, []int{1, 3}, false},
 		{[]string{"2", "3"}, []int{2, 3}, false},
+		{[]json.Number{json.Number("2"), json.Number("3")}, []int{2, 3}, false},
 		{[2]string{"2", "3"}, []int{2, 3}, false},
+		{[2]json.Number{json.Number("2"), json.Number("3")}, []int{2, 3}, false},
 		// errors
 		{nil, nil, true},
 		{testing.T{}, nil, true},
 		{[]string{"foo", "bar"}, nil, true},
+		{[]json.Number{json.Number("foo"), json.Number("bar")}, nil, true},
 	}
 
 	for i, test := range tests {
