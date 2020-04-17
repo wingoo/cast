@@ -877,15 +877,15 @@ func ToStringE(i interface{}) (string, error) {
 	case int8:
 		return strconv.FormatInt(int64(s), 10), nil
 	case uint:
-		return strconv.FormatInt(int64(s), 10), nil
+		return strconv.FormatUint(uint64(s), 10), nil
 	case uint64:
-		return strconv.FormatInt(int64(s), 10), nil
+		return strconv.FormatUint(uint64(s), 10), nil
 	case uint32:
-		return strconv.FormatInt(int64(s), 10), nil
+		return strconv.FormatUint(uint64(s), 10), nil
 	case uint16:
-		return strconv.FormatInt(int64(s), 10), nil
+		return strconv.FormatUint(uint64(s), 10), nil
 	case uint8:
-		return strconv.FormatInt(int64(s), 10), nil
+		return strconv.FormatUint(uint64(s), 10), nil
 	case []byte:
 		return string(s), nil
 	case template.HTML:
@@ -1187,6 +1187,56 @@ func ToStringSliceE(i interface{}) ([]string, error) {
 		return a, nil
 	case []string:
 		return v, nil
+	case []int8:
+		for _, u := range v {
+			a = append(a, ToString(u))
+		}
+		return a, nil
+	case []int16:
+		for _, u := range v {
+			a = append(a, ToString(u))
+		}
+		return a, nil
+	case []int32:
+		for _, u := range v {
+			a = append(a, ToString(u))
+		}
+		return a, nil
+	case []int:
+		for _, u := range v {
+			a = append(a, ToString(u))
+		}
+		return a, nil
+	case []int64:
+		for _, u := range v {
+			a = append(a, ToString(u))
+		}
+		return a, nil
+	case []uint8:
+		for _, u := range v {
+			a = append(a, ToString(u))
+		}
+		return a, nil
+	case []uint16:
+		for _, u := range v {
+			a = append(a, ToString(u))
+		}
+		return a, nil
+	case []uint32:
+		for _, u := range v {
+			a = append(a, ToString(u))
+		}
+		return a, nil
+	case []uint:
+		for _, u := range v {
+			a = append(a, ToString(u))
+		}
+		return a, nil
+	case []uint64:
+		for _, u := range v {
+			a = append(a, ToString(u))
+		}
+		return a, nil
 	case string:
 		return strings.Fields(v), nil
 	case interface{}:
@@ -1226,6 +1276,35 @@ func ToIntSliceE(i interface{}) ([]int, error) {
 		return a, nil
 	default:
 		return []int{}, fmt.Errorf("unable to cast %#v of type %T to []int", i, i)
+	}
+}
+
+// ToIntSliceE casts an interface to a []int type.
+func ToUInt64SliceE(i interface{}) ([]uint64, error) {
+	if i == nil {
+		return []uint64{}, fmt.Errorf("unable to cast %#v of type %T to []uint64", i, i)
+	}
+
+	switch v := i.(type) {
+	case []uint64:
+		return v, nil
+	}
+
+	kind := reflect.TypeOf(i).Kind()
+	switch kind {
+	case reflect.Slice, reflect.Array:
+		s := reflect.ValueOf(i)
+		a := make([]uint64, s.Len())
+		for j := 0; j < s.Len(); j++ {
+			val, err := ToUint64E(s.Index(j).Interface())
+			if err != nil {
+				return []uint64{}, fmt.Errorf("unable to cast %#v of type %T to []uint64", i, i)
+			}
+			a[j] = val
+		}
+		return a, nil
+	default:
+		return []uint64{}, fmt.Errorf("unable to cast %#v of type %T to []uint64", i, i)
 	}
 }
 

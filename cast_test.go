@@ -1049,6 +1049,43 @@ func TestToIntSliceE(t *testing.T) {
 	}
 }
 
+func TestToUInt64SliceE(t *testing.T) {
+	tests := []struct {
+		input  interface{}
+		expect []uint64
+		iserr  bool
+	}{
+		{[]int{1, 3}, []uint64{1, 3}, false},
+		{[]interface{}{1.2, 3.2}, []uint64{1, 3}, false},
+		{[]string{"2", "3"}, []uint64{2, 3}, false},
+		{[]json.Number{json.Number("2"), json.Number("3")}, []uint64{2, 3}, false},
+		{[2]string{"2", "3"}, []uint64{2, 3}, false},
+		{[2]json.Number{json.Number("2"), json.Number("3")}, []uint64{2, 3}, false},
+		// errors
+		{nil, nil, true},
+		{testing.T{}, nil, true},
+		{[]string{"foo", "bar"}, nil, true},
+		{[]json.Number{json.Number("foo"), json.Number("bar")}, nil, true},
+	}
+
+	for i, test := range tests {
+		errmsg := fmt.Sprintf("i = %d", i) // assert helper message
+
+		v, err := ToUInt64SliceE(test.input)
+		if test.iserr {
+			assert.Error(t, err, errmsg)
+			continue
+		}
+
+		assert.NoError(t, err, errmsg)
+		assert.Equal(t, test.expect, v, errmsg)
+
+		// Non-E test
+		v = ToUInt64Slice(test.input)
+		assert.Equal(t, test.expect, v, errmsg)
+	}
+}
+
 func TestToSliceE(t *testing.T) {
 	tests := []struct {
 		input  interface{}
@@ -1089,6 +1126,16 @@ func TestToStringSliceE(t *testing.T) {
 		{[]string{"a", "b"}, []string{"a", "b"}, false},
 		{[]interface{}{1, 3}, []string{"1", "3"}, false},
 		{interface{}(1), []string{"1"}, false},
+		{[]int8{1, 22}, []string{"1", "22"}, false},
+		{[]int16{1, 22}, []string{"1", "22"}, false},
+		{[]int32{1, 22}, []string{"1", "22"}, false},
+		{[]int{1, 22}, []string{"1", "22"}, false},
+		{[]int64{1, 22}, []string{"1", "22"}, false},
+		{[]uint8{1, 22}, []string{"1", "22"}, false},
+		{[]uint16{1, 22}, []string{"1", "22"}, false},
+		{[]uint32{1, 22}, []string{"1", "22"}, false},
+		{[]uint{1, 22}, []string{"1", "22"}, false},
+		{[]uint64{1, 22}, []string{"1", "22"}, false},
 		// errors
 		{nil, nil, true},
 		{testing.T{}, nil, true},

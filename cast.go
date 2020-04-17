@@ -164,6 +164,12 @@ func ToIntSlice(i interface{}) []int {
 	return v
 }
 
+// ToIntSlice casts an interface to a []int type.
+func ToUInt64Slice(i interface{}) []uint64 {
+	v, _ := ToUInt64SliceE(i)
+	return v
+}
+
 // ToDurationSlice casts an interface to a []time.Duration type.
 func ToDurationSlice(i interface{}) []time.Duration {
 	v, _ := ToDurationSliceE(i)
